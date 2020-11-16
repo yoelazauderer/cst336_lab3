@@ -1,0 +1,27 @@
+body {
+    text-align: center;
+    background-color: #cce6ff50;
+}
+
+h1 {
+    background-color: 	#cce6ff;
+    padding: 10px;
+}
+
+#submitBtn {
+    padding: 10px;
+    background-color: #cce6ff;
+    font-size: 20px;
+    border-radius: 12px;
+}
+
+#footersection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+footer {
+    font-size:12px;
+}
