@@ -57,39 +57,30 @@
             $("#zip").on("change", async function(){
                 
                 let zipCode = $("#zip").val();
-                
-                // if (!isZipValid(zipCode)) {
-                //     $("#zipError").html("Zip code not found");
-                // }
-                
-                //alert($("#zip").val());
-                
                 let url = `https://itcdland.csumb.edu/~milara/ajax/cityInfoByZip.php?zip=${zipCode}`;
                 let response = await fetch(url);
                 let data = await response.json();
                 //console.log(data)
-                $("#city").html(data.city);
-                $("#latitude").html(data.latitude);
-                $("#longitude").html(data.longitude);
-                if (typeof data == undefined) {
+                if (data == false) {
                      $("#zipError").html("Zip code not found");
+                     $("#zipError").css("color", "red");
+                } else {
+                    $("#city").html(data.city);
+                    $("#latitude").html(data.latitude);
+                    $("#longitude").html(data.longitude);
                 }
-                    
                 
             });//zip
             
             $(document).ready(async function() {
-                //let state = $("#state").val();
+                
                 let url = `https://cst336.herokuapp.com/projects/api/state_abbrAPI.php`;
                 let response = await fetch(url);
                 let data = await response.json();
                 data.forEach( function(i){ 
                     $("#state").append(`<option>${i.usps}</option>`);
                 });
-
-                // for (let i=0; i < data.length; i++) {
-                //     $("#state").append(`<option> ${data[i].state} </option>`);
-                // }
+            
             });//state
             
             $("#state").on("change", async function(){
@@ -106,8 +97,6 @@
                 }
                 
             });//state
-            
-            
             
             $("#username").on("change", async function(){
                 
@@ -137,10 +126,6 @@
                }
                 
             });
-            
-            // function isZipValid(zipCode){
-            //      return /^\d{5}(-\d{4})?$/.test(zipCode);
-            // }
             
             function isFormValid(){
                 isValid = true;
