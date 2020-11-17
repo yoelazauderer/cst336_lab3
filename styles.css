@@ -1,18 +1,31 @@
 body {
     text-align: center;
     background-color: #cce6ff50;
-}
-
-h1 {
-    background-color: 	#cce6ff;
-    padding: 10px;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 #submitBtn {
     padding: 10px;
-    background-color: #cce6ff;
+    background-color: green;
     font-size: 20px;
     border-radius: 12px;
+}
+
+.error {
+    font-weight: bold;
+}
+
+#accountInfo {
+    margin: auto;
+    background-color: #cce6ff;
+    border-radius: 20px;
+    padding: 15px;
+    width: 500px;
+}
+
+p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 30px;
 }
 
 #footersection {
@@ -25,3 +38,8 @@ h1 {
 footer {
     font-size:12px;
 }
+
+
+
+
+

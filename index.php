@@ -3,19 +3,25 @@
     <head>
         <title> Sign Up Page </title>
         <link href="styles.css" rel="stylesheet" type="text/css" />
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
-        <h1> Sign Up</h1><br>
-        
+        <h1> Sign Up</h1><hr>
+        <br>
+        <h3> User Information:</h3><br>
         <form id="signupForm" action="welcome.html">
         
+           <div id="personalInfo">
             First Name:     <input type="text"    name="fname"><br><br>
             Last Name:      <input type="text"    name="lName"><br><br>
             Gender:         <input type="radio"   name="gender"     value="m"> Male 
                             <input type="radio"   name="gender"     value="f"> Female <br><br>
-                        
-            Zip Code:       <input type="text"    id="zip"    name="zip"><br><br>
+            
+            
+            Zip Code:       <input type="text"    id="zip"    name="zip"><br>
+                            <span class="error" id="zipError"></span><br><br>
             City:           <span id="city"></span><br><br>
             Latitude:       <span id="latitude"></span><br>
             Longitude:      <span id="longitude"></span><br><br>
@@ -23,34 +29,41 @@
             State:
             <select id="state" name="state">
                 <option> Select One </option>
-                <option value="ca"> California   </option>
-                <option value="ny"> New York     </option>
-                <option value="tx"> Texas        </option>
             </select><br><br>
         
             Select a County: <select id="county"></select><br><br>
-        
+            </div>
+            
+            <div id="accountInfo">
+            <h3> Account Information:</h3>
+            <br>
             Desired Username: <input type="text" id="username"><br>
-                              <span id="usernameError"></span><br>
+                              <span class="error" id="usernameError"></span><br>
         
             Password:         <input type="password" id="password" name="password"><br>
-                              <span id="passwordError"></span> <br>
+                              <span class="error" id="passwordError"></span> <br>
             Password Again:   <input type="password" id="passwordAgain"><br>
-                              <span id="passwordAgainError"></span> <br><br>
-        
+                              <span class="error" id="passwordAgainError"></span> <br><br>
+            
             <input id="submitBtn" type="submit" value="Sign Up!">
-        
+            </div>
         </form>
         
         <script>
             
             var usernameAvailable = false;
             
-            //Displaying City from API after typing a zip code
+             //Displaying City from API after typing a zip code
             $("#zip").on("change", async function(){
                 
-                //alert($("#zip").val());
                 let zipCode = $("#zip").val();
+                
+                // if (!isZipValid(zipCode)) {
+                //     $("#zipError").html("Zip code not found");
+                // }
+                
+                //alert($("#zip").val());
+                
                 let url = `https://itcdland.csumb.edu/~milara/ajax/cityInfoByZip.php?zip=${zipCode}`;
                 let response = await fetch(url);
                 let data = await response.json();
@@ -58,9 +71,26 @@
                 $("#city").html(data.city);
                 $("#latitude").html(data.latitude);
                 $("#longitude").html(data.longitude);
+                if (typeof data == undefined) {
+                     $("#zipError").html("Zip code not found");
+                }
+                    
                 
-
             });//zip
+            
+            $(document).ready(async function() {
+                //let state = $("#state").val();
+                let url = `https://cst336.herokuapp.com/projects/api/state_abbrAPI.php`;
+                let response = await fetch(url);
+                let data = await response.json();
+                data.forEach( function(i){ 
+                    $("#state").append(`<option>${i.usps}</option>`);
+                });
+
+                // for (let i=0; i < data.length; i++) {
+                //     $("#state").append(`<option> ${data[i].state} </option>`);
+                // }
+            });//state
             
             $("#state").on("change", async function(){
                 
@@ -76,6 +106,8 @@
                 }
                 
             });//state
+            
+            
             
             $("#username").on("change", async function(){
                 
@@ -106,6 +138,10 @@
                 
             });
             
+            // function isZipValid(zipCode){
+            //      return /^\d{5}(-\d{4})?$/.test(zipCode);
+            // }
+            
             function isFormValid(){
                 isValid = true;
                 if (!usernameAvailable){
@@ -119,7 +155,7 @@
                 }
                 
                 if ($("#password").val() != $("#passwordAgain").val()){
-                    $("#passwordAgainError").html("Password Mismatch");
+                    $("#passwordAgainError").html("Password Mismatch - Retype Password");
                     $("#passwordAgainError").css("color", "red");
                     isValid = false;
                 } else {
